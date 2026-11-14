@@ -1,0 +1,209 @@
+================================================================================
+                    UNIQUE DENTAL & IMPLANT CENTRE
+                 FULL-STACK PROJECT STATUS & DETAILS
+================================================================================
+Generated: October 27, 2026
+Project Location: C:\Users\ashis\OneDrive - Informatics College Pokhara Pvt Ltd\Desktop\New folder
+
+--------------------------------------------------------------------------------
+1. CURRENT LIVE RUNTIME STATUS
+--------------------------------------------------------------------------------
+Both services are configured, built, and actively running:
+
+* Frontend Application:
+  - URL: http://localhost:5173
+  - Tooling: Vite v8 + React 19 + Tailwind CSS
+  - Status: Active (Port 5173)
+
+* Backend REST API:
+  - URL: http://localhost:5000
+  - Entry point: dental-booking-system/src/server.js
+  - API Health: http://localhost:5000/api/v1/health (Returns 200 OK)
+  - Swagger Documentation: http://localhost:5000/api/docs
+  - Status: Active (Port 5000)
+
+* Database:
+  - Engine: MongoDB (Local Windows Service 'MongoDB Server')
+  - Database Name: dental_booking
+  - Connection String: mongodb://localhost:27017/dental_booking
+  - Status: Connected
+
+* Default Administrator Account:
+  - Email:    uniquedental200@gmail.com
+  - Password: unique123
+  - Role:     admin
+  - Seeder:   Executed via `npm run seed:admin`
+
+--------------------------------------------------------------------------------
+2. CLOUDINARY IMPLEMENTATION (DEEP DIVE)
+--------------------------------------------------------------------------------
+Cloudinary has been implemented with a production-ready "dual-mode / graceful 
+fallback" architecture in both the backend and frontend:
+
+A. Architecture & Logic:
+   - Config file: `dental-booking-system/src/config/cloudinary.js`
+   - Detection function: `isCloudinaryConfigured()`
+     Checks if either `CLOUDINARY_URL` is set OR all three (`CLOUDINARY_CLOUD_NAME`, 
+     `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`) are present and not equal to 
+     the default placeholder string ('your_cloud_name').
+
+B. How Uploads Work:
+   - Route: POST `/api/v1/gallery` (Admin only, multipart/form-data via Multer)
+   - When Cloudinary is CONFIGURED:
+     1. The uploaded file is temporarily stored in local cache.
+     2. `uploadToCloudinary(filePath, 'unique-dental/gallery')` sends the file to Cloudinary.
+     3. Cloudinary returns a CDN `secure_url` and `public_id`.
+     4. The local temporary file is automatically cleaned up and deleted from disk.
+     5. The MongoDB `Gallery` model saves `imageUrl`, `cloudinaryPublicId`, and `source: 'cloudinary'`.
+   - When Cloudinary is NOT YET CONFIGURED (Fallback mode):
+     1. The file is saved directly to local disk in `uploads/gallery/`.
+     2. Express serves it statically via `/uploads/gallery/:filename`.
+     3. The MongoDB `Gallery` model saves `imageUrl: http://localhost:5000/uploads/gallery/...` 
+        and `source: 'local'`.
+     -> This ensures image uploading NEVER crashes or breaks even if Cloudinary credentials 
+        are not yet set.
+
+C. How Deletions Work:
+   - Route: DELETE `/api/v1/gallery/:id` (Admin only)
+   - If the image has a `cloudinaryPublicId`, it calls `cloudinary.uploader.destroy(publicId)`.
+   - If stored locally, it safely deletes the file from `uploads/gallery/`.
+   - The MongoDB database record is then removed.
+
+D. Frontend Gallery Admin Indicator:
+   - File: `dental-frontend/src/pages/admin/AdminGallery.jsx`
+   - The backend `/api/v1/gallery` endpoint returns `cloudinaryConfigured: true/false`.
+   - In the admin gallery header:
+     * If active: Displays a green badge "● Cloudinary Active" with pulsing dot.
+     * If inactive: Displays an amber badge "● Local Storage Mode (Cloudinary pending credentials)".
+
+E. How to Enable Cloudinary:
+   To switch from local storage to direct Cloudinary CDN hosting, open:
+   `dental-booking-system/.env`
+   and fill in your free Cloudinary credentials (from https://cloudinary.com):
+     CLOUDINARY_CLOUD_NAME=your_actual_cloud_name
+     CLOUDINARY_API_KEY=your_actual_api_key
+     CLOUDINARY_API_SECRET=your_actual_api_secret
+
+--------------------------------------------------------------------------------
+3. GOOGLE MAPS EMBED & LOCATION INTEGRATION
+--------------------------------------------------------------------------------
+* Location: Contact Page (`dental-frontend/src/pages/public/Contact.jsx`)
+* Specific Pin: Unique Dental & Implant Centre Pvt. Ltd., Puspalal Park, Butwal, Nepal
+* Embedded iframe src:
+  https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14130.392962526219!2d83.4461641871582!3d27.69880959999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399687573dafd3fd%3A0xa518e511157cedb2!2sUnique%20dental%20and%20Implant%20Centre%20Pvt.Ltd!5e0!3m2!1sen!2snp!4v1793109512544!5m2!1sen!2snp
+* UI Implementation:
+  - Responsive container with rounded corners and modern card drop shadow.
+  - Set with `referrerPolicy="strict-origin-when-cross-origin"`.
+  - Direct action button "Open in Google Maps" linking directly to the Google Maps app.
+  - Individual branch direction links for:
+    1. Puspalal Park, Butwal (Main Branch)
+    2. Taulihawa Road, Lumbini
+    3. Manigram Branch
+
+--------------------------------------------------------------------------------
+4. BACKEND SYSTEM SUMMARY (`dental-booking-system`)
+--------------------------------------------------------------------------------
+* Technology Stack:
+  - Node.js (v24), Express 4, Mongoose 8, MongoDB
+  - Multer (file uploads)
+  - Nodemailer (email notifications & reminders)
+  - Winston & Morgan (structured logging with combined.log and error.log)
+  - Helmet & CORS (security headers & origin management)
+  - Express Rate Limit (DDoS protection: 100 requests per 15 minutes)
+  - Express Validator (input validation and sanitization)
+  - Swagger UI Express (automated OpenAPI docs)
+
+* Core API Endpoints:
+  - Authentication (`/api/v1/auth`):
+    * POST `/register` - Patient registration
+    * POST `/login` - JWT authentication
+    * GET  `/profile` - Current user profile
+    * PATCH `/profile` - Update profile details
+    * POST `/forgot-password` & `/reset-password`
+  - Appointments (`/api/v1/appointments`):
+    * POST `/` - Book appointment
+    * GET  `/my` - Patient's own appointments
+    * GET  `/` - Admin view all with date/status filters
+    * PATCH `/:id/status` - Admin approve, complete, or cancel
+    * PATCH `/:id/reschedule` - Reschedule date/time
+  - Medical Records (`/api/v1/medical-records`):
+    * Patient medical history, doctor prescriptions, diagnoses, and notes
+  - Patient Directory (`/api/v1/admin/patients`):
+    * Admin search and management of all registered clinic patients
+  - Gallery (`/api/v1/gallery`):
+    * GET  `/` - Public list with categories (Clinic, Team, Treatments, Smiles)
+    * POST `/` - Admin multipart upload (Cloudinary + Local fallback)
+    * DELETE `/:id` - Admin deletion with remote and local asset cleanup
+  - System Health (`/api/v1/health`):
+    * Ping test verifying backend and database connection status
+
+--------------------------------------------------------------------------------
+5. FRONTEND SYSTEM SUMMARY (`dental-frontend`)
+--------------------------------------------------------------------------------
+* Technology Stack:
+  - React 19, React Router DOM v7
+  - Tailwind CSS 3.4
+  - Lucide React (feather-style modern icons)
+  - React Hot Toast (toast notifications)
+  - Axios (configured API client with JWT interceptors in `src/lib/api.js`)
+  - Date-fns (date manipulation and formatting)
+
+* Key Features & User Interface:
+  1. Multilingual Support:
+     - Full English and Nepali (नेपाली) translation toggle across the whole app.
+     - Managed via React Context (`LanguageContext`).
+  2. Universal Quick Booking Modal:
+     - Available anywhere via `useBookingModal()`.
+     - Direct branch selection, doctor selection, date and time picker.
+  3. Public Pages:
+     - Home: Hero with clinic showcase, services overview, why choose us, doctor intro, testimonials, quick booking prompt.
+     - About Us: Clinic background, hygiene protocols, modern dental tech.
+     - Services & Treatments: Implants, Orthodontics, Root Canal, Cosmetic, Pediatric dentistry with descriptions.
+     - Dentists: Team qualifications, doctor profiles, consultation schedules.
+     - Branches & Branch Detail: Butwal, Lumbini, and Manigram branches with direct contact numbers and Google Maps directions.
+     - Gallery: Filterable gallery by category (Clinic, Team, Treatments, Smiles) with responsive lightbox.
+     - Contact: Inquiry message form, FAQ accordion, direct click-to-call buttons, emergency hotline banner, embedded interactive Google Maps.
+  4. Patient Portal:
+     - Register, Login, My Appointments, Medical History, Profile management.
+  5. Admin Dashboard:
+     - Admin Analytics: appointments stats, upcoming patients, quick actions.
+     - Admin Appointments: approve, reschedule, cancel, complete appointments.
+     - Admin Gallery: drag-and-drop file upload, live image preview, category assignment, Cloudinary status badge, one-click deletion.
+     - Admin Medical Records & Patient Management: manage patient files and doctor prescriptions.
+
+--------------------------------------------------------------------------------
+6. DIRECTORY STRUCTURE
+--------------------------------------------------------------------------------
+New folder/
+├── PROJECT_DETAILS.txt             <- This documentation summary file
+├── dental-booking-system/          <- Backend API
+│   ├── logs/                       <- Combined & error log files
+│   ├── src/
+│   │   ├── config/                 <- database.js, cloudinary.js, swagger.js, email.js
+│   │   ├── controllers/            <- auth, appointment, gallery, patient controllers
+│   │   ├── middleware/             <- auth, errorHandler, rateLimiter, upload
+│   │   ├── models/                 <- User, Appointment, Gallery, MedicalRecord
+│   │   ├── routes/                 <- Express API router modules
+│   │   ├── seedAdmin.js            <- Seeder script for admin user
+│   │   ├── app.js                  <- Express application setup
+│   │   └── server.js               <- Server bootloader and MongoDB connector
+│   ├── uploads/gallery/            <- Local fallback storage for uploaded images
+│   ├── .env                        <- Backend environment variables
+│   └── package.json
+└── dental-frontend/                <- Frontend Client
+    ├── src/
+    │   ├── components/             <- Navbar, Footer, BookingModal, UI elements
+    │   ├── context/                <- AuthContext, BookingContext, LanguageContext
+    │   ├── lib/                    <- api.js (Axios instance with auth header)
+    │   ├── pages/
+    │   │   ├── admin/              <- Admin dashboard, appointments, gallery, records
+    │   │   ├── auth/               <- Login, Register
+    │   │   ├── patient/            <- Patient dashboard, appointments, profile
+    │   │   └── public/             <- Home, About, Services, Dentists, Gallery, Contact
+    │   ├── App.jsx                 <- Routes configuration
+    │   └── main.jsx
+    ├── .env                        <- Frontend environment variables
+    ├── tailwind.config.js
+    ├── vite.config.js
+    └── package.json
+================================================================================

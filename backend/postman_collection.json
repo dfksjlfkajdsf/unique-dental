@@ -1,0 +1,380 @@
+{
+  "info": {
+    "name": "Dental Booking System API",
+    "description": "Complete REST API collection for the Dental Clinic Booking System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:5000/api/v1" },
+    { "key": "patient_token", "value": "" },
+    { "key": "admin_token", "value": "" },
+    { "key": "appointment_id", "value": "" },
+    { "key": "record_id", "value": "" },
+    { "key": "patient_id", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/health"
+      }
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register Patient",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "var json = pm.response.json();",
+                "if (json.data && json.data.token) pm.collectionVariables.set('patient_token', json.data.token);",
+                "if (json.data && json.data.user) pm.collectionVariables.set('patient_id', json.data.user._id);"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/auth/register",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"Password1\",\n  \"phone\": \"+1-555-0100\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Register Admin",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/auth/register",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dr. Admin\",\n  \"email\": \"admin@clinic.com\",\n  \"password\": \"Admin1234\",\n  \"phone\": \"+1-555-9999\",\n  \"role\": \"admin\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login Patient",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "var json = pm.response.json();",
+                "if (json.data && json.data.token) pm.collectionVariables.set('patient_token', json.data.token);"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"Password1\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login Admin",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "var json = pm.response.json();",
+                "if (json.data && json.data.token) pm.collectionVariables.set('admin_token', json.data.token);"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@clinic.com\",\n  \"password\": \"Admin1234\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/auth/profile",
+            "header": [{ "key": "Authorization", "value": "Bearer {{patient_token}}" }]
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/auth/profile",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{patient_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Updated\",\n  \"phone\": \"+1-555-0200\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Patient - Appointments",
+      "item": [
+        {
+          "name": "Book Appointment",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "var json = pm.response.json();",
+                "if (json.data && json.data.appointment) pm.collectionVariables.set('appointment_id', json.data.appointment._id);"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/appointments",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{patient_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"appointmentDate\": \"2026-08-15\",\n  \"appointmentTime\": \"09:00\",\n  \"treatmentType\": \"Teeth Cleaning\",\n  \"notes\": \"First visit, routine cleaning\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get My Appointments",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/appointments/my?page=1&limit=10",
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "status", "value": "pending", "disabled": true }
+              ]
+            },
+            "header": [{ "key": "Authorization", "value": "Bearer {{patient_token}}" }]
+          }
+        },
+        {
+          "name": "Get Appointment By ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/appointments/{{appointment_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{patient_token}}" }]
+          }
+        },
+        {
+          "name": "Cancel Appointment",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/appointments/{{appointment_id}}/cancel",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{patient_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cancellationReason\": \"Schedule conflict\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get My Medical Records",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/medical-records/my",
+            "header": [{ "key": "Authorization", "value": "Bearer {{patient_token}}" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin - Appointments",
+      "item": [
+        {
+          "name": "Get All Appointments",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/appointments/admin/all?page=1&limit=20",
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" },
+                { "key": "status", "value": "pending", "disabled": true },
+                { "key": "date", "value": "2026-08-15", "disabled": true }
+              ]
+            },
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }]
+          }
+        },
+        {
+          "name": "Confirm Appointment",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/appointments/{{appointment_id}}/status",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{admin_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"confirmed\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Complete Appointment",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/appointments/{{appointment_id}}/status",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{admin_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"completed\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Admin Cancel Appointment",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/appointments/{{appointment_id}}/status",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{admin_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"cancelled\",\n  \"cancellationReason\": \"Doctor unavailable\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin - Patients",
+      "item": [
+        {
+          "name": "Get All Patients",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/admin/patients?page=1&limit=10",
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "search", "value": "John", "disabled": true }
+              ]
+            },
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }]
+          }
+        },
+        {
+          "name": "Get Patient By ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/admin/patients/{{patient_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }]
+          }
+        },
+        {
+          "name": "Update Patient",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/admin/patients/{{patient_id}}",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{admin_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe Updated\",\n  \"isActive\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Deactivate Patient",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/admin/patients/{{patient_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin - Medical Records",
+      "item": [
+        {
+          "name": "Create Medical Record",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "var json = pm.response.json();",
+                "if (json.data && json.data.record) pm.collectionVariables.set('record_id', json.data.record._id);"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/medical-records/admin",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{admin_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patientId\": \"{{patient_id}}\",\n  \"appointmentId\": \"{{appointment_id}}\",\n  \"diagnosis\": \"Mild gingivitis\",\n  \"prescription\": \"Chlorhexidine mouthwash 0.12% twice daily for 2 weeks\",\n  \"treatmentNotes\": \"Full mouth scaling performed. Patient advised on proper brushing technique.\",\n  \"attachmentUrl\": \"https://example.com/xray-john-2026.jpg\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get All Medical Records",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/medical-records/admin/all",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }]
+          }
+        },
+        {
+          "name": "Update Medical Record",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/medical-records/admin/{{record_id}}",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{admin_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"treatmentNotes\": \"Follow-up: Condition improved significantly.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Medical Record",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/medical-records/admin/{{record_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-white text-gray-900 antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight;
+    letter-spacing: -0.025em;
+  }
+  ::selection {
+    @apply bg-primary-100 text-primary-900;
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+  }
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { @apply bg-gray-200 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-gray-300; }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-semibold text-sm transition-all duration-200 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply btn bg-primary-700 text-white hover:bg-primary-800 shadow-sm;
+  }
+  .btn-secondary {
+    @apply btn bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 hover:border-gray-300;
+  }
+  .btn-accent {
+    @apply btn bg-accent-500 text-white hover:bg-accent-600 shadow-sm;
+  }
+  .btn-danger {
+    @apply btn bg-red-600 text-white hover:bg-red-700;
+  }
+  .btn-success {
+    @apply btn bg-primary-700 text-white hover:bg-primary-800;
+  }
+  .input {
+    @apply w-full px-4 py-3 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent placeholder-gray-400 transition-all duration-200;
+  }
+  .label {
+    @apply block text-sm font-semibold text-gray-700 mb-1.5;
+  }
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-gray-100 p-6;
+  }
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
+  }
+  .section-tag {
+    @apply inline-block text-xs font-bold uppercase tracking-[0.18em] text-primary-700 mb-3;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Page entry — every public page fades in on mount */
+  .page-enter {
+    animation: page-fade-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Smooth image loading */
+  img {
+    transition: opacity 0.3s ease;
+  }
+}
+
+/* ── Keyframes not in Tailwind config (used in raw CSS) ── */
+@keyframes page-fade-in {
+  0%   { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: none; }
+}
+
+/* Shimmer skeleton loader */
+@keyframes shimmer-sweep {
+  0%   { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 1000px 100%;
+  animation: shimmer-sweep 1.5s infinite linear;
+  border-radius: 0.5rem;
+}
+
+/* Smooth scrollbar for Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db transparent;
+}
+

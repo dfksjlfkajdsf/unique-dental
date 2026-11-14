@@ -1,0 +1,17 @@
+{
+  "name": "unique-dental",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Unique Dental & Implant Centre - Full Stack Application",
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build:frontend": "npm --prefix frontend run build",
+    "start:backend": "npm --prefix backend start",
+    "seed:admin": "npm --prefix backend run seed:admin",
+    "seed:gallery": "npm --prefix backend run seed:gallery",
+    "install:backend": "npm --prefix backend install",
+    "install:frontend": "npm --prefix frontend install",
+    "install:all": "npm run install:backend && npm run install:frontend"
+  }
+}
