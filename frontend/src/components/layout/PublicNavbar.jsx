@@ -16,20 +16,21 @@ const WaIcon = ({ size = 4 }) => (
 function Logo({ scrolled }) {
   const [imgFailed, setImgFailed] = useState(false);
   return (
-    <Link to="/" className="flex items-center gap-2.5 sm:gap-3.5 group flex-shrink-0">
+    <Link to="/" className="flex items-center gap-2 sm:gap-3 group flex-shrink-0 min-w-0">
       {!imgFailed ? (
         <img
           src="/logo.png"
           alt="Unique Dental and Implant Center"
-          className="w-13 h-13 sm:w-16 sm:h-16 rounded-full object-cover bg-white p-0.5 shadow-lg ring-2 ring-accent-400 group-hover:ring-accent-300 group-hover:scale-105 transition-all duration-300 flex-shrink-0"
+          className="w-11 h-11 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full object-cover bg-white p-0.5 shadow-md ring-2 ring-accent-400 group-hover:ring-accent-300 group-hover:scale-105 transition-all duration-300 flex-shrink-0"
+          style={{ maxWidth: '64px', maxHeight: '64px' }}
           onError={() => setImgFailed(true)}
         />
       ) : (
-        <div className={`w-13 h-13 sm:w-16 sm:h-16 rounded-full flex items-center justify-center font-black text-white text-xl flex-shrink-0 ring-2 ring-accent-400 transition-colors ${scrolled ? 'bg-primary-700' : 'bg-white/20 border border-white/30'}`}>U</div>
+        <div className={`w-11 h-11 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center font-black text-white text-base sm:text-xl flex-shrink-0 ring-2 ring-accent-400 transition-colors ${scrolled ? 'bg-primary-700' : 'bg-white/20 border border-white/30'}`}>U</div>
       )}
-      <div className="leading-tight flex-shrink-0 whitespace-nowrap">
-        <div className={`font-black text-base sm:text-lg xl:text-xl tracking-tight transition-colors leading-none ${scrolled ? 'text-gray-900 group-hover:text-amber-700' : 'text-white group-hover:text-accent-300'}`}>Unique Dental</div>
-        <div className={`text-[11px] sm:text-xs xl:text-[13px] font-bold leading-none mt-1 sm:mt-1.5 transition-colors ${scrolled ? 'text-amber-600' : 'text-accent-300'}`}>& Implant Center Pvt. Ltd.</div>
+      <div className="leading-tight flex-shrink-0">
+        <div className={`font-black text-sm sm:text-lg xl:text-xl tracking-tight transition-colors leading-none ${scrolled ? 'text-gray-900 group-hover:text-amber-700' : 'text-white group-hover:text-accent-300'}`}>Unique Dental</div>
+        <div className={`text-[10px] sm:text-xs xl:text-[13px] font-bold leading-none mt-1 sm:mt-1.5 transition-colors ${scrolled ? 'text-amber-600' : 'text-accent-300'}`}>& Implant Center Pvt. Ltd.</div>
       </div>
     </Link>
   );
