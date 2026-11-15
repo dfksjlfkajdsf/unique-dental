@@ -45,11 +45,11 @@ export default function FloatingContact() {
   const btnBase = "w-44 flex items-center gap-2.5 pl-4 pr-5 py-3 rounded-full transition-all duration-200 hover:scale-105 active:scale-95";
 
   return (
-    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-5 z-40 flex flex-col items-end gap-2.5 sm:gap-3">
+    <div className="fixed bottom-6 right-5 z-50 flex flex-col items-stretch gap-3">
 
-      {/* Connect with us — hidden on small mobile to avoid covering screen, fades out when scrolled on desktop */}
+      {/* Connect with us — fades out when scrolled */}
       <div
-        className="hidden sm:flex flex-col items-stretch gap-2 transition-all duration-300 overflow-hidden"
+        className="flex flex-col items-stretch gap-2 transition-all duration-300 overflow-hidden"
         style={{
           opacity: scrolled ? 0 : 1,
           maxHeight: scrolled ? '0px' : '300px',
@@ -94,34 +94,54 @@ export default function FloatingContact() {
         </a>
       </div>
 
-      {/* Divider — also hides on scroll and on mobile */}
+      {/* Divider — also hides on scroll */}
       <div
-        className="hidden sm:block h-px w-full bg-gray-200 rounded-full transition-all duration-300"
+        className="h-px bg-gray-200 rounded-full transition-all duration-300"
         style={{ opacity: scrolled ? 0 : 0.6, maxHeight: scrolled ? '0px' : '1px' }}
       />
 
-      {/* Chat with us */}
+      {/* Chat with us — shrinks to icon on scroll */}
       <a
         href={WHATSAPP}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"
-        className="flex items-center bg-[#25D366] hover:bg-[#1db954] text-white shadow-2xl shadow-green-500/40 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden w-11 h-11 sm:w-auto sm:h-12 justify-center sm:justify-start px-0 sm:px-4 gap-0 sm:gap-2.5"
+        className="self-end flex items-center bg-[#25D366] hover:bg-[#1db954] text-white shadow-2xl shadow-green-500/40 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden"
+        style={{
+          width: scrolled ? '2.75rem' : '11rem',
+          height: scrolled ? '2.75rem' : '3rem',
+          padding: scrolled ? '0' : '0 1.25rem 0 1rem',
+          justifyContent: scrolled ? 'center' : 'flex-start',
+          gap: scrolled ? '0' : '0.625rem',
+        }}
       >
         <WaIcon />
-        <span className="hidden sm:inline text-sm font-bold whitespace-nowrap">
+        <span
+          className="text-sm font-bold whitespace-nowrap transition-all duration-300 overflow-hidden"
+          style={{ opacity: scrolled ? 0 : 1, maxWidth: scrolled ? '0px' : '8rem' }}
+        >
           Chat with us
         </span>
       </a>
 
-      {/* Call us */}
+      {/* Call us — shrinks to icon on scroll */}
       <a
         href={PHONE}
         aria-label="Call us"
-        className="flex items-center bg-white hover:bg-primary-50 text-primary-800 border border-primary-200 hover:border-primary-400 shadow-xl rounded-full transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden w-11 h-11 sm:w-auto sm:h-12 justify-center sm:justify-start px-0 sm:px-4 gap-0 sm:gap-2"
+        className="self-end flex items-center bg-white hover:bg-primary-50 text-primary-800 border border-primary-200 hover:border-primary-400 shadow-xl rounded-full transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden"
+        style={{
+          width: scrolled ? '2.75rem' : '11rem',
+          height: scrolled ? '2.75rem' : '3rem',
+          padding: scrolled ? '0' : '0 1.25rem 0 1rem',
+          justifyContent: scrolled ? 'center' : 'flex-start',
+          gap: scrolled ? '0' : '0.625rem',
+        }}
       >
         <Phone className="h-4 w-4 flex-shrink-0" />
-        <span className="hidden sm:inline text-sm font-bold whitespace-nowrap">
+        <span
+          className="text-sm font-bold whitespace-nowrap transition-all duration-300 overflow-hidden"
+          style={{ opacity: scrolled ? 0 : 1, maxWidth: scrolled ? '0px' : '8rem' }}
+        >
           071-537300
         </span>
       </a>
@@ -142,5 +162,3 @@ export default function FloatingContact() {
     </div>
   );
 }
-
-

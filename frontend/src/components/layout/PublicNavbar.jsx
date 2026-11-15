@@ -13,26 +13,38 @@ const WaIcon = ({ size = 4 }) => (
   </svg>
 );
 
-function Logo({ scrolled }) {
+function Logo() {
   const [imgFailed, setImgFailed] = useState(false);
   return (
-    <Link to="/" className="flex items-center gap-2 sm:gap-3 group flex-shrink-0 min-w-0">
+    <Link to="/" className="flex items-center gap-2.5 sm:gap-3.5 group flex-shrink-0 min-w-0">
       {!imgFailed ? (
         <img
           src="/logo.png"
           alt="Unique Dental and Implant Center"
-          className="w-11 h-11 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full object-cover bg-white p-0.5 shadow-md ring-2 ring-accent-400 group-hover:ring-accent-300 group-hover:scale-105 transition-all duration-300 flex-shrink-0"
-          style={{ maxWidth: '64px', maxHeight: '64px' }}
+          className="rounded-full object-cover bg-white p-0.5 shadow-md ring-2 ring-accent-400 group-hover:ring-accent-300 group-hover:scale-105 transition-all duration-300 shrink-0"
+          style={{
+            width: '48px',
+            height: '48px',
+            minWidth: '48px',
+            minHeight: '48px',
+            maxWidth: '48px',
+            maxHeight: '48px',
+          }}
           onError={() => setImgFailed(true)}
         />
       ) : (
-        <div className="w-11 h-11 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center font-black text-white text-base sm:text-xl flex-shrink-0 ring-2 ring-accent-400 bg-blue-900 transition-colors">U</div>
+        <div
+          className="rounded-full flex items-center justify-center font-black text-white text-base sm:text-xl shrink-0 ring-2 ring-accent-400 bg-[#0B2545] transition-colors"
+          style={{ width: '48px', height: '48px', minWidth: '48px', minHeight: '48px' }}
+        >
+          U
+        </div>
       )}
       <div className="leading-tight flex-shrink-0">
-        <div className="font-black text-sm sm:text-lg xl:text-xl tracking-tight text-white group-hover:text-sky-300 transition-colors leading-none">
+        <div className="font-black text-base sm:text-lg xl:text-xl tracking-tight text-[#0B2545] group-hover:text-amber-500 transition-colors leading-none">
           Unique Dental
         </div>
-        <div className="text-[10px] sm:text-xs xl:text-[13px] font-bold text-sky-300 group-hover:text-accent-300 leading-none mt-1 sm:mt-1.5 transition-colors">
+        <div className="text-[11px] sm:text-xs xl:text-[13px] font-bold text-[#1E3A8A] group-hover:text-amber-600 leading-none mt-1 sm:mt-1.5 transition-colors">
           & Implant Center Pvt. Ltd.
         </div>
       </div>
@@ -68,24 +80,26 @@ export default function PublicNavbar() {
   }, [isHome]);
 
   const navBg = scrolled
-    ? 'bg-[#0B1E38]/98 backdrop-blur-xl shadow-lg border-b border-blue-900/50'
-    : 'bg-[#0B1E38]/85 backdrop-blur-md border-b border-white/10';
-  const linkBase = 'text-blue-100/90 hover:text-white hover:bg-white/10 font-semibold';
-  const linkActive = 'text-white bg-blue-600/40 font-bold border border-blue-400/50 shadow-sm shadow-blue-500/20';
+    ? 'bg-white/98 backdrop-blur-lg shadow-sm border-b border-gray-100'
+    : 'bg-white/90 backdrop-blur-md border-b border-gray-100/60 shadow-xs';
+
+  // Text color: Dark Blue (#0B2545) -> Hover: Golden (amber-500)
+  const linkBase = 'text-[#0B2545] hover:text-amber-500 font-bold transition-colors';
+  const linkActive = 'text-amber-600 bg-amber-50/90 font-bold border border-amber-300/80 shadow-xs';
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navBg}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20 sm:h-24">
-          <Logo scrolled={scrolled} />
+          <Logo />
 
           {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1 flex-shrink-0">
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 flex-shrink-0">
             {navLinks.map(({ to, label }) => (
               <Link
                 key={to}
                 to={to}
-                className={`px-2.5 xl:px-3.5 py-1.5 xl:py-2 rounded-lg text-xs xl:text-sm whitespace-nowrap transition-all duration-200 ${pathname === to ? linkActive : linkBase}`}
+                className={`px-2.5 xl:px-3 py-1.5 rounded-lg text-xs xl:text-sm whitespace-nowrap ${pathname === to ? linkActive : linkBase}`}
               >
                 {label}
               </Link>
@@ -97,37 +111,37 @@ export default function PublicNavbar() {
             {/* Language toggle */}
             <button
               onClick={toggle}
-              className="flex items-center gap-1 px-2.5 xl:px-3 py-1.5 rounded-lg border border-blue-400/30 hover:bg-white/10 text-blue-100 text-xs font-extrabold transition-all flex-shrink-0"
+              className="flex items-center gap-1 px-2.5 xl:px-3 py-1.5 rounded-lg border border-[#0B2545]/20 hover:border-amber-400 text-[#0B2545] hover:text-amber-500 text-xs font-extrabold transition-all flex-shrink-0 hover:bg-amber-50/50"
               title={np ? 'Switch to English' : 'नेपालीमा जानुहोस्'}
             >
-              <span className={lang === 'en' ? 'text-accent-400 font-black' : 'text-blue-200/50'}>EN</span>
-              <span className="text-blue-200/30">|</span>
-              <span className={lang === 'np' ? 'text-accent-400 font-black' : 'text-blue-200/50'}>NP</span>
+              <span className={lang === 'en' ? 'text-amber-600 font-black' : 'text-gray-400'}>EN</span>
+              <span className="text-gray-300">|</span>
+              <span className={lang === 'np' ? 'text-amber-600 font-black' : 'text-gray-400'}>NP</span>
             </button>
 
-            <a href={PHONE} className="flex items-center gap-1.5 text-xs xl:text-sm font-semibold text-blue-100 hover:text-white transition-colors flex-shrink-0">
-              <Phone className="h-3.5 w-3.5 text-accent-400" />
+            <a href={PHONE} className="flex items-center gap-1.5 text-xs xl:text-sm font-bold text-[#0B2545] hover:text-amber-500 transition-colors flex-shrink-0">
+              <Phone className="h-3.5 w-3.5 text-amber-500" />
               <span className="hidden xl:inline">071-537300</span>
             </a>
             <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="p-2 rounded-xl bg-[#25D366] hover:bg-[#1db954] text-white transition-all duration-200 hover:scale-105 flex-shrink-0 shadow-md shadow-green-500/20">
               <WaIcon size={4} />
             </a>
-            <div className="w-px h-5 flex-shrink-0 bg-blue-800/60" />
-            <button onClick={() => openBookingModal()} className="px-3.5 xl:px-5 py-2 xl:py-2.5 bg-accent-500 hover:bg-accent-600 text-white text-xs xl:text-sm font-bold rounded-xl transition-colors shadow-lg shadow-accent-500/25 whitespace-nowrap flex-shrink-0">
-                {np ? 'अहिले बुक गर्नुहोस्' : 'Book Now'}
-              </button>
+            <div className="w-px h-5 flex-shrink-0 bg-gray-200" />
+            <button onClick={() => openBookingModal()} className="px-3.5 xl:px-5 py-2 xl:py-2.5 bg-accent-500 hover:bg-accent-600 text-white text-xs xl:text-sm font-bold rounded-xl transition-all shadow-lg shadow-accent-500/25 whitespace-nowrap flex-shrink-0 hover:scale-[1.02] active:scale-[0.98]">
+              {np ? 'अहिले बुक गर्नुहोस्' : 'Book Now'}
+            </button>
           </div>
 
           {/* Mobile toggle */}
           <div className="lg:hidden flex items-center gap-2">
             <button
               onClick={toggle}
-              className="px-2.5 py-1 rounded-lg border border-blue-400/30 text-blue-100 hover:bg-white/10 text-xs font-extrabold transition-colors"
+              className="px-2.5 py-1 rounded-lg border border-[#0B2545]/20 text-[#0B2545] hover:text-amber-500 hover:border-amber-400 text-xs font-extrabold transition-colors"
               title={np ? 'Switch to English' : 'नेपालीमा हेर्नुहोस्'}
             >
               {lang === 'en' ? 'नेपाली' : 'English'}
             </button>
-            <button className="p-2 rounded-xl text-blue-100 hover:bg-white/10 transition-colors" onClick={() => setOpen(!open)}>
+            <button className="p-2 rounded-xl text-[#0B2545] hover:text-amber-500 hover:bg-amber-50/50 transition-colors" onClick={() => setOpen(!open)}>
               {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
@@ -136,23 +150,23 @@ export default function PublicNavbar() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="lg:hidden bg-[#0B1E38] border-t border-blue-900/60 px-4 py-4 space-y-1 shadow-2xl">
+        <div className="lg:hidden bg-white border-t border-gray-100 px-4 py-4 space-y-1 shadow-xl">
           {navLinks.map(({ to, label }) => (
             <Link key={to} to={to} onClick={() => setOpen(false)}
-              className={`block px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${pathname === to ? 'text-white bg-blue-600/40 font-bold border border-blue-400/50' : 'text-blue-100 hover:text-white hover:bg-white/10'}`}>
+              className={`block px-4 py-3 rounded-xl text-sm font-bold transition-colors ${pathname === to ? 'text-amber-700 bg-amber-50 font-bold border border-amber-200' : 'text-[#0B2545] hover:text-amber-500 hover:bg-amber-50/50'}`}>
               {label}
             </Link>
           ))}
-          <div className="pt-3 border-t border-blue-900/60 space-y-2">
-            <a href={PHONE} className="flex items-center justify-center gap-2 w-full px-4 py-3 border border-blue-700/60 text-blue-100 font-bold rounded-xl hover:bg-white/10 transition-colors">
-              <Phone className="h-4 w-4 text-accent-500" /> 071-537300
+          <div className="pt-3 border-t border-gray-100 space-y-2">
+            <a href={PHONE} className="flex items-center justify-center gap-2 w-full px-4 py-3 border border-gray-200 text-[#0B2545] hover:text-amber-500 font-bold rounded-xl hover:bg-amber-50/50 transition-colors">
+              <Phone className="h-4 w-4 text-amber-500" /> 071-537300
             </a>
             <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-[#25D366] text-white font-bold rounded-xl hover:bg-[#1db954] transition-colors">
               <WaIcon size={4} /> {np ? 'व्हाट्सएपमा च्याट' : 'Chat on WhatsApp'}
             </a>
             <button onClick={() => { setOpen(false); openBookingModal(); }} className="block w-full text-center px-4 py-3 bg-accent-500 text-white font-bold rounded-xl shadow-lg shadow-accent-500/25">
-                {np ? 'अपोइन्टमेन्ट बुक गर्नुहोस्' : 'Book Appointment'}
-              </button>
+              {np ? 'अपोइन्टमेन्ट बुक गर्नुहोस्' : 'Book Appointment'}
+            </button>
           </div>
         </div>
       )}
