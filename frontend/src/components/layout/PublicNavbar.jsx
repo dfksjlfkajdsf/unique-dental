@@ -26,11 +26,15 @@ function Logo({ scrolled }) {
           onError={() => setImgFailed(true)}
         />
       ) : (
-        <div className={`w-11 h-11 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center font-black text-white text-base sm:text-xl flex-shrink-0 ring-2 ring-accent-400 transition-colors ${scrolled ? 'bg-primary-700' : 'bg-white/20 border border-white/30'}`}>U</div>
+        <div className="w-11 h-11 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center font-black text-white text-base sm:text-xl flex-shrink-0 ring-2 ring-accent-400 bg-blue-900 transition-colors">U</div>
       )}
       <div className="leading-tight flex-shrink-0">
-        <div className={`font-black text-sm sm:text-lg xl:text-xl tracking-tight transition-colors leading-none ${scrolled ? 'text-gray-900 group-hover:text-amber-700' : 'text-white group-hover:text-accent-300'}`}>Unique Dental</div>
-        <div className={`text-[10px] sm:text-xs xl:text-[13px] font-bold leading-none mt-1 sm:mt-1.5 transition-colors ${scrolled ? 'text-amber-600' : 'text-accent-300'}`}>& Implant Center Pvt. Ltd.</div>
+        <div className="font-black text-sm sm:text-lg xl:text-xl tracking-tight text-white group-hover:text-sky-300 transition-colors leading-none">
+          Unique Dental
+        </div>
+        <div className="text-[10px] sm:text-xs xl:text-[13px] font-bold text-sky-300 group-hover:text-accent-300 leading-none mt-1 sm:mt-1.5 transition-colors">
+          & Implant Center Pvt. Ltd.
+        </div>
       </div>
     </Link>
   );
@@ -63,13 +67,11 @@ export default function PublicNavbar() {
     return () => window.removeEventListener('scroll', handler);
   }, [isHome]);
 
-  const navBg = scrolled ? 'bg-white/98 backdrop-blur-lg shadow-sm border-b border-amber-100/60' : 'bg-transparent';
-  const linkBase = scrolled
-    ? 'text-amber-950/85 hover:text-amber-600 hover:bg-amber-50/80 font-semibold'
-    : 'text-amber-100 hover:text-accent-300 hover:bg-white/10 font-semibold';
-  const linkActive = scrolled
-    ? 'text-amber-800 bg-amber-100/90 font-bold border border-amber-300/80 shadow-sm'
-    : 'text-accent-300 bg-accent-500/20 font-bold border border-accent-400/40 shadow-sm shadow-accent-500/20';
+  const navBg = scrolled
+    ? 'bg-[#0B1E38]/98 backdrop-blur-xl shadow-lg border-b border-blue-900/50'
+    : 'bg-[#0B1E38]/85 backdrop-blur-md border-b border-white/10';
+  const linkBase = 'text-blue-100/90 hover:text-white hover:bg-white/10 font-semibold';
+  const linkActive = 'text-white bg-blue-600/40 font-bold border border-blue-400/50 shadow-sm shadow-blue-500/20';
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navBg}`}>
@@ -83,7 +85,7 @@ export default function PublicNavbar() {
               <Link
                 key={to}
                 to={to}
-                className={`px-2.5 xl:px-3.5 py-1.5 xl:py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-all duration-200 ${pathname === to ? linkActive : linkBase}`}
+                className={`px-2.5 xl:px-3.5 py-1.5 xl:py-2 rounded-lg text-xs xl:text-sm whitespace-nowrap transition-all duration-200 ${pathname === to ? linkActive : linkBase}`}
               >
                 {label}
               </Link>
@@ -95,22 +97,22 @@ export default function PublicNavbar() {
             {/* Language toggle */}
             <button
               onClick={toggle}
-              className={`flex items-center gap-1 px-2.5 xl:px-3 py-1.5 rounded-lg border text-xs font-extrabold transition-all flex-shrink-0 ${scrolled ? 'border-amber-200/80 hover:bg-amber-50 text-amber-950' : 'border-amber-400/40 hover:bg-white/10 text-amber-100'}`}
+              className="flex items-center gap-1 px-2.5 xl:px-3 py-1.5 rounded-lg border border-blue-400/30 hover:bg-white/10 text-blue-100 text-xs font-extrabold transition-all flex-shrink-0"
               title={np ? 'Switch to English' : 'नेपालीमा जानुहोस्'}
             >
-              <span className={lang === 'en' ? 'text-accent-400 font-black' : (scrolled ? 'text-gray-400' : 'text-white/50')}>EN</span>
-              <span className={scrolled ? 'text-gray-300' : 'text-white/30'}>|</span>
-              <span className={lang === 'np' ? 'text-accent-400 font-black' : (scrolled ? 'text-gray-400' : 'text-white/50')}>NP</span>
+              <span className={lang === 'en' ? 'text-accent-400 font-black' : 'text-blue-200/50'}>EN</span>
+              <span className="text-blue-200/30">|</span>
+              <span className={lang === 'np' ? 'text-accent-400 font-black' : 'text-blue-200/50'}>NP</span>
             </button>
 
-            <a href={PHONE} className={`flex items-center gap-1.5 text-xs xl:text-sm font-semibold transition-colors flex-shrink-0 ${scrolled ? 'text-amber-950 hover:text-amber-600' : 'text-amber-100 hover:text-accent-300'}`}>
+            <a href={PHONE} className="flex items-center gap-1.5 text-xs xl:text-sm font-semibold text-blue-100 hover:text-white transition-colors flex-shrink-0">
               <Phone className="h-3.5 w-3.5 text-accent-400" />
               <span className="hidden xl:inline">071-537300</span>
             </a>
-            <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="p-2 rounded-xl bg-[#25D366] hover:bg-[#1db954] text-white transition-all duration-200 hover:scale-105 flex-shrink-0">
+            <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="p-2 rounded-xl bg-[#25D366] hover:bg-[#1db954] text-white transition-all duration-200 hover:scale-105 flex-shrink-0 shadow-md shadow-green-500/20">
               <WaIcon size={4} />
             </a>
-            <div className={`w-px h-5 flex-shrink-0 ${scrolled ? 'bg-amber-200/60' : 'bg-white/20'}`} />
+            <div className="w-px h-5 flex-shrink-0 bg-blue-800/60" />
             <button onClick={() => openBookingModal()} className="px-3.5 xl:px-5 py-2 xl:py-2.5 bg-accent-500 hover:bg-accent-600 text-white text-xs xl:text-sm font-bold rounded-xl transition-colors shadow-lg shadow-accent-500/25 whitespace-nowrap flex-shrink-0">
                 {np ? 'अहिले बुक गर्नुहोस्' : 'Book Now'}
               </button>
@@ -120,12 +122,12 @@ export default function PublicNavbar() {
           <div className="lg:hidden flex items-center gap-2">
             <button
               onClick={toggle}
-              className={`px-2.5 py-1 rounded-lg border text-xs font-extrabold transition-colors ${scrolled ? 'border-amber-200 text-amber-950 hover:bg-amber-50' : 'border-amber-400/50 text-amber-200 hover:bg-white/10'}`}
+              className="px-2.5 py-1 rounded-lg border border-blue-400/30 text-blue-100 hover:bg-white/10 text-xs font-extrabold transition-colors"
               title={np ? 'Switch to English' : 'नेपालीमा हेर्नुहोस्'}
             >
               {lang === 'en' ? 'नेपाली' : 'English'}
             </button>
-            <button className={`p-2 rounded-xl transition-colors ${scrolled ? 'text-amber-950 hover:bg-amber-50' : 'text-amber-200 hover:bg-white/10'}`} onClick={() => setOpen(!open)}>
+            <button className="p-2 rounded-xl text-blue-100 hover:bg-white/10 transition-colors" onClick={() => setOpen(!open)}>
               {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
@@ -134,21 +136,21 @@ export default function PublicNavbar() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="lg:hidden bg-white border-t border-amber-100 px-4 py-4 space-y-1 shadow-xl">
+        <div className="lg:hidden bg-[#0B1E38] border-t border-blue-900/60 px-4 py-4 space-y-1 shadow-2xl">
           {navLinks.map(({ to, label }) => (
             <Link key={to} to={to} onClick={() => setOpen(false)}
-              className={`block px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${pathname === to ? 'text-amber-800 bg-amber-100/90 font-bold border border-amber-300/70' : 'text-amber-950/85 hover:text-amber-700 hover:bg-amber-50'}`}>
+              className={`block px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${pathname === to ? 'text-white bg-blue-600/40 font-bold border border-blue-400/50' : 'text-blue-100 hover:text-white hover:bg-white/10'}`}>
               {label}
             </Link>
           ))}
-          <div className="pt-3 border-t border-amber-100 space-y-2">
-            <a href={PHONE} className="flex items-center justify-center gap-2 w-full px-4 py-3 border border-amber-300 text-amber-950 font-bold rounded-xl hover:bg-amber-50 transition-colors">
+          <div className="pt-3 border-t border-blue-900/60 space-y-2">
+            <a href={PHONE} className="flex items-center justify-center gap-2 w-full px-4 py-3 border border-blue-700/60 text-blue-100 font-bold rounded-xl hover:bg-white/10 transition-colors">
               <Phone className="h-4 w-4 text-accent-500" /> 071-537300
             </a>
             <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-[#25D366] text-white font-bold rounded-xl hover:bg-[#1db954] transition-colors">
               <WaIcon size={4} /> {np ? 'व्हाट्सएपमा च्याट' : 'Chat on WhatsApp'}
             </a>
-            <button onClick={() => { setOpen(false); openBookingModal(); }} className="block w-full text-center px-4 py-3 bg-accent-500 text-white font-bold rounded-xl">
+            <button onClick={() => { setOpen(false); openBookingModal(); }} className="block w-full text-center px-4 py-3 bg-accent-500 text-white font-bold rounded-xl shadow-lg shadow-accent-500/25">
                 {np ? 'अपोइन्टमेन्ट बुक गर्नुहोस्' : 'Book Appointment'}
               </button>
           </div>
