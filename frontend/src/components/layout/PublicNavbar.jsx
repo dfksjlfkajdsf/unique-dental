@@ -118,8 +118,12 @@ export default function PublicNavbar() {
 
           {/* Mobile toggle */}
           <div className="lg:hidden flex items-center gap-2">
-            <button onClick={toggle} className={`px-2.5 py-1 rounded-lg border text-xs font-extrabold ${scrolled ? 'border-amber-200 text-amber-950' : 'border-amber-400/50 text-amber-200'}`}>
-              {lang === 'en' ? 'NP' : 'EN'}
+            <button
+              onClick={toggle}
+              className={`px-2.5 py-1 rounded-lg border text-xs font-extrabold transition-colors ${scrolled ? 'border-amber-200 text-amber-950 hover:bg-amber-50' : 'border-amber-400/50 text-amber-200 hover:bg-white/10'}`}
+              title={np ? 'Switch to English' : 'नेपालीमा हेर्नुहोस्'}
+            >
+              {lang === 'en' ? 'नेपाली' : 'English'}
             </button>
             <button className={`p-2 rounded-xl transition-colors ${scrolled ? 'text-amber-950 hover:bg-amber-50' : 'text-amber-200 hover:bg-white/10'}`} onClick={() => setOpen(!open)}>
               {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
