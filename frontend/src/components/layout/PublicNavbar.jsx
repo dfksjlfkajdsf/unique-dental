@@ -21,21 +21,16 @@ function Logo() {
         <img
           src="/logo.png"
           alt="Unique Dental and Implant Center"
-          className="rounded-full object-cover bg-white p-0.5 shadow-md ring-2 ring-accent-400 group-hover:ring-accent-300 group-hover:scale-105 transition-all duration-300 shrink-0"
+          className="w-[66px] h-[66px] sm:w-[80px] sm:h-[80px] rounded-full object-cover bg-white p-0.5 shadow-md ring-2 ring-[#0B2545] group-hover:ring-amber-500 group-hover:scale-105 transition-all duration-300 shrink-0"
           style={{
-            width: '48px',
-            height: '48px',
-            minWidth: '48px',
-            minHeight: '48px',
-            maxWidth: '48px',
-            maxHeight: '48px',
+            maxWidth: '82px',
+            maxHeight: '82px',
           }}
           onError={() => setImgFailed(true)}
         />
       ) : (
         <div
-          className="rounded-full flex items-center justify-center font-black text-white text-base sm:text-xl shrink-0 ring-2 ring-accent-400 bg-[#0B2545] transition-colors"
-          style={{ width: '48px', height: '48px', minWidth: '48px', minHeight: '48px' }}
+          className="w-[66px] h-[66px] sm:w-[80px] sm:h-[80px] rounded-full flex items-center justify-center font-black text-white text-xl sm:text-2xl shrink-0 ring-2 ring-[#0B2545] bg-[#0B2545] group-hover:ring-amber-500 transition-colors"
         >
           U
         </div>
